@@ -27,4 +27,6 @@
 
     <string name="action_mapview" translatable="false">View Map</string>
 
+    <string name="action_share" translatable="false">Share</string>
+
 </resources>
