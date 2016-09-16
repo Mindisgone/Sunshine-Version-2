@@ -105,10 +105,10 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String forecast = mForecastAdapter.getItem(position);
-                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_LONG).show();
                 Intent detailActivity = new Intent(getActivity(), DetailActivity.class);
                 detailActivity.putExtra(Intent.EXTRA_TEXT,forecast);
                 startActivity(detailActivity);
+
             }
         });
 
@@ -128,6 +128,7 @@ public class ForecastFragment extends Fragment {
     public void onStart(){
         super.onStart();
         updateWeather();
+
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
