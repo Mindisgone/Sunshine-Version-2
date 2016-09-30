@@ -3,7 +3,10 @@
     package="com.example.android.sunshine.app" >
 
     <!-- This permission is necessary in order for Sunshine to perform network access. -->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -37,13 +40,45 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.sunshine.app.MainActivity" />
         </activity>
+
+        <service
+            android:name=".Sync.SunshineAuthenticatorService"
+            >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
         <provider
-            android:authorities="com.example.android.sunshine.app"
-            android:name=".data.WeatherProvider" />
+            android:authorities="@string/content_authority"
+            android:name=".data.WeatherProvider"
+            android:exported="false"
+            android:syncable="true" />
 
-        <service android:name=".service.SunshineService"/>
+        <!-- Permissions required by the sync adapter -->
+        <uses-permission
+            android:name="android.permission.READ_SYNC_SETTINGS"/>
+        <uses-permission
+            android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+        <uses-permission
+            android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
-        <receiver android:name=".service.SunshineService$AlarmReceiver"/>
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".Sync.SunshineSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
     </application>
 
 </manifest>
